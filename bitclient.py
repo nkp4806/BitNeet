@@ -1,5 +1,6 @@
 import socket
 import threading
+import protocol
 
 SERVER_IP = input("Server IP : ")
 PORT = 9999
@@ -13,8 +14,12 @@ client.connect((SERVER_IP, PORT))
 def receive():
     while True:
         try:
-            msg = client.recv(1024).decode()
-            print(msg)
+            data = client.recv(1024)
+
+            if not data :
+                break
+            packet = protocol.decode(data)
+
         except:
             break
 
@@ -29,6 +34,5 @@ while True:
     if text == "":
         continue
 
-    message = f"{name}: {text}"
-
-    client.send(message.encode())
+    packet = protocol.create_message(name,text)
+    client.send(protocol.encode(packet))

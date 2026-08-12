@@ -1,5 +1,6 @@
 import socket
 import threading
+import protocol
 
 HOST = "0.0.0.0"
 PORT = 9999
@@ -23,12 +24,14 @@ def broadcast(message, sender):
 def handle(client):
     while True:
         try:
-            message = client.recv(1024)
+            data = client.recv(1024)
 
-            if not message:
+            if not data:
                 break
 
-            broadcast(message, client)
+            packet = protocol.decode(data)
+
+            broadcast(protocol.encode(packet), client)
 
         except:
             break
