@@ -20,6 +20,8 @@
 - [ ] Basic chat commands
 - [ ] Better error handling
 - [ ] Robust TCP message framing
+- [ ] Persistent BitNeet user IDs
+- [ ] User-to-user addressing
 
 ## Phase 3 — Security
 
@@ -34,6 +36,8 @@
 - [ ] Server discovery / connection system
 - [ ] NAT and firewall considerations
 - [ ] Reliable long-distance communication
+- [ ] Identity / connection discovery
+- [ ] Persistent identity across networks and devices
 
 ## Phase 5 — Advanced Features
 
