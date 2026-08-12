@@ -80,3 +80,11 @@ Packets are newline-delimited JSON (NDJSON).
 Each packet ends with a newline (`\n`).
 
 One line equals one complete packet.
+
+---
+
+## Implementation Status
+
+BNP1 v1 is currently implemented for basic message communication.
+
+The current implementation uses newline-delimited JSON, but robust TCP stream buffering and message framing are still under development.
