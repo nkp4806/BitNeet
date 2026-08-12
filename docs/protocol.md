@@ -2,7 +2,7 @@
 
 ## Overview
 
-NP1 is the communication protocol used by BitNeet.
+BNP1 is the communication protocol used by BitNeet.
 
 All communication between the client and the server uses JSON packets.
 

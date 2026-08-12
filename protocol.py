@@ -43,16 +43,4 @@ def decode(data):
     data = data.decode().strip()
     return json.loads(data)
 
-original = create_message("neet", "hello")
 
-encoded = encode(original)
-decoded = decode(encoded)
-
-print("original:", original)
-print("encoded:", encoded)
-print("decoded:", decoded)
-
-if original == decoded:
-    print("protocol test passed!")
-else:
-    print("protocol test failed!")
