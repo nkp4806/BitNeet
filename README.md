@@ -56,6 +56,10 @@ The server receives messages from connected clients and broadcasts them to the o
 
 ## Running BitNeet
 
+### Default Port
+
+BitNeet uses TCP port `4806` by default.
+
 ### 1. Start the server
 
 On the machine that will act as the server:
@@ -67,7 +71,7 @@ python bitserver.py
 You should see:
 
 ```text
-Server started on port 9999
+Server started on port 4806
 ```
 
 ### 2. Start a client
