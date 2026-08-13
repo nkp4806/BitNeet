@@ -3,7 +3,7 @@ import threading
 import protocol
 
 HOST = "0.0.0.0"
-PORT = 9999
+PORT = 4806
 
 clients = []
 

@@ -3,7 +3,7 @@ import threading
 import protocol
 
 SERVER_IP = input("Server IP : ")
-PORT = 9999
+PORT = 4806
 
 name = input("Your name : ")
 
