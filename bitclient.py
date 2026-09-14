@@ -37,11 +37,16 @@ print("\nConnected!\n")
 join_packet = protocol.create_join(name)
 client.send(protocol.encode(join_packet))
 
-while True:
-    text = input()
+try:
+    while True:
+        text = input()
 
-    if text == "":
-        continue
+        packet = protocol.create_message(name, text)
+        client.send(protocol.encode(packet))
 
-    packet = protocol.create_message(name,text)
-    client.send(protocol.encode(packet))
+except KeyboardInterrupt:
+    leave_packet = protocol.create_leave(name)
+    client.send(protocol.encode(leave_packet))
+
+    client.close()
+    print("\nDisconnected.")
