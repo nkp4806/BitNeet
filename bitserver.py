@@ -36,6 +36,9 @@ def handle(client):
             packets = decoder.feed(data)
 
             for packet in packets:
+                if not protocol.validate(packet):
+                    continue
+                
                 if packet["type"] == "join":
                     username = packet["user"]
 

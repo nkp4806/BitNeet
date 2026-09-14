@@ -43,6 +43,24 @@ def decode(data):
     data = data.decode().strip()
     return json.loads(data)
 
+def validate(packet):
+    if not isinstance(packet, dict):
+        return False
+
+    if packet.get("version") != PROTOCOL_VERSION:
+        return False
+
+    if packet.get("type") not in {"message", "join", "leave", "server"}:
+        return False
+
+    if "user" not in packet:
+        return False
+
+    if "message" not in packet:
+        return False
+
+    return True
+
 class Decoder:
     def __init__(self):
         self.buffer = b""
