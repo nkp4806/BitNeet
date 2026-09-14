@@ -43,4 +43,21 @@ def decode(data):
     data = data.decode().strip()
     return json.loads(data)
 
+class Decoder:
+    def __init__(self):
+        self.buffer = b""
 
+    def feed(self,data):
+        self.buffer += data
+
+        packets = []
+
+        while b"\n" in self.buffer:
+            line, self.buffer = self.buffer.split(b"\n", 1)
+
+            if line :
+                packets.append(decode(line))
+
+        return packets
+
+    

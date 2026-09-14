@@ -22,6 +22,8 @@ def broadcast(message, sender):
                 clients.remove(client)
 
 def handle(client):
+    decoder = protocol.decoder
+
     while True:
         try:
             data = client.recv(1024)
@@ -29,9 +31,10 @@ def handle(client):
             if not data:
                 break
 
-            packet = protocol.decode(data)
+            packets= decoder.feed(data)
 
-            broadcast(protocol.encode(packet), client)
+            for packet in packets:
+                broadcast(protocol.encode(packet), client)
 
         except:
             break

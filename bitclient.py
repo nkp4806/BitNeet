@@ -12,13 +12,19 @@ client.connect((SERVER_IP, PORT))
 
 
 def receive():
+    decoder = protocol.Decoder()
+
     while True:
         try:
-            data = client.recv(1024)
+            data=client.recv(1024)
 
-            if not data :
+            if not data:
                 break
-            packet = protocol.decode(data)
+
+            packets = decoder.feed(data)
+
+            for packet in packets:
+                print(packet)
 
         except:
             break
