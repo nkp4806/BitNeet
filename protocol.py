@@ -60,4 +60,19 @@ class Decoder:
 
         return packets
 
-    
+def format_packet(packet):
+    packet_type = packet.get("type")
+
+    if packet_type == "message":
+        return f"[{packet['user']}] {packet['message']}"
+
+    if packet_type == "join":
+        return f"[SERVER] {packet['user']} joined the chat."
+
+    if packet_type == "leave":
+        return f"[SERVER] {packet['user']} left the chat."
+
+    if packet_type == "server":
+        return f"[SERVER] {packet['message']}"
+
+    return "[UNKNOWN] Invalid packet"

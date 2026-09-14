@@ -37,3 +37,6 @@
 - Basic TCP server
 - Terminal-based chat
 - LAN communication
+- Added formatted packet display
+- Added join and leave notification
+- Added TCP socket address reuse for easier server restarts

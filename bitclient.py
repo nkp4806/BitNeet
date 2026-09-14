@@ -24,7 +24,7 @@ def receive():
             packets = decoder.feed(data)
 
             for packet in packets:
-                print(packet)
+                print(protocol.format_packet(packet))
 
         except:
             break
@@ -33,6 +33,9 @@ def receive():
 threading.Thread(target=receive, daemon=True).start()
 
 print("\nConnected!\n")
+
+join_packet = protocol.create_join(name)
+client.send(protocol.encode(join_packet))
 
 while True:
     text = input()

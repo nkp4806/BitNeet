@@ -8,6 +8,7 @@ PORT = 4806
 clients = []
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server.bind((HOST, PORT))
 server.listen()
 
@@ -22,7 +23,8 @@ def broadcast(message, sender):
                 clients.remove(client)
 
 def handle(client):
-    decoder = protocol.decoder
+    decoder = protocol.Decoder()
+    username = None
 
     while True:
         try:
@@ -31,13 +33,30 @@ def handle(client):
             if not data:
                 break
 
-            packets= decoder.feed(data)
+            packets = decoder.feed(data)
 
             for packet in packets:
-                broadcast(protocol.encode(packet), client)
+                if packet["type"] == "join":
+                    username = packet["user"]
+
+                    join_message = protocol.create_server(
+                        f"{username} joined the chat."
+                    )
+
+                    broadcast(protocol.encode(join_message), client)
+
+                else:
+                    broadcast(protocol.encode(packet), client)
 
         except:
             break
+
+    if username:
+        leave_message = protocol.create_server(
+            f"{username} left the chat."
+        )
+
+        broadcast(protocol.encode(leave_message), client)
 
     clients.remove(client)
     client.close()

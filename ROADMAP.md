@@ -13,9 +13,9 @@
 
 ## Phase 2 — Core Chat
 
-- [ ] Join notifications
-- [ ] Leave notifications
-- [ ] Proper formatted message display
+- [x] Join notifications
+- [x] Leave notifications
+- [x] Proper formatted message display
 - [ ] Graceful client disconnect
 - [ ] Basic chat commands
 - [ ] Better error handling
