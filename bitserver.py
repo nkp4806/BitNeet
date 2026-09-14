@@ -48,6 +48,16 @@ def handle(client):
 
                     broadcast(protocol.encode(join_message), client)
 
+                elif packet["type"] == "leave":
+                    leave_message = protocol.create_server(
+                        f"{username} left the chat."
+                    )
+
+                    broadcast(protocol.encode(leave_message), client)
+
+                    username = None
+                    break
+
                 else:
                     broadcast(protocol.encode(packet), client)
 
