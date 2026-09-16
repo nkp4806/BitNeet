@@ -37,6 +37,13 @@
 - Basic TCP server
 - Terminal-based chat
 - LAN communication
+
+## v0.2 — BNP1 Protocol
+
+### Added
+
 - Added formatted packet display
 - Added join and leave notification
 - Added TCP socket address reuse for easier server restarts
+- Added `/help` command
+- Added `/quit` command

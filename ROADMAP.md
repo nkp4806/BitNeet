@@ -16,10 +16,10 @@
 - [x] Join notifications
 - [x] Leave notifications
 - [x] Proper formatted message display
-- [ ] Graceful client disconnect
-- [ ] Basic chat commands
+- [x] Graceful client disconnect
+- [x] Basic chat commands
 - [ ] Better error handling
-- [ ] Robust TCP message framing
+- [x] Robust TCP message framing
 - [ ] Persistent BitNeet user IDs
 - [ ] User-to-user addressing
 

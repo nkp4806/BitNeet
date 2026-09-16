@@ -41,6 +41,20 @@ try:
     while True:
         text = input()
 
+        if text == "/help":
+            print("\nAvailable commands:")
+            print("/help  Show available commands")
+            print("/quit  Leave BitNeet\n")
+            continue
+
+        if text == "/quit":
+            leave_packet = protocol.create_leave(name)
+            client.send(protocol.encode(leave_packet))
+
+            client.close()
+            print("\nDisconnected.")
+            break
+
         packet = protocol.create_message(name, text)
         client.send(protocol.encode(packet))
 
