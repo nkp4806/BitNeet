@@ -15,12 +15,13 @@ server.listen()
 print(f"Server started on port {PORT}")
 
 def broadcast(message, sender):
-    for client in clients:
+    for client in clients.copy():
         if client != sender:
             try:
                 client.send(message)
-            except:
-                clients.remove(client)
+            except (ConnectionResetError, BrokenPipeError, OSError):
+                if client in clients:
+                    clients.remove(client)
 
 def handle(client):
     decoder = protocol.Decoder()
@@ -61,7 +62,7 @@ def handle(client):
                 else:
                     broadcast(protocol.encode(packet), client)
 
-        except:
+        except (ConnectionResetError, BrokenPipeError, OSError):
             break
 
     if username:
@@ -71,15 +72,27 @@ def handle(client):
 
         broadcast(protocol.encode(leave_message), client)
 
-    clients.remove(client)
+    if client in clients:
+        clients.remove(client)
+
     client.close()
 
-while True:
-    client, addr = server.accept()
+try:
+    while True:
+        client, addr = server.accept()
 
-    print(f"{addr} connected")
+        print(f"{addr} connected")
 
-    clients.append(client)
+        clients.append(client)
 
-    thread = threading.Thread(target=handle, args=(client,))
-    thread.start()
+        thread = threading.Thread(target=handle, args=(client,), daemon=True)
+        thread.start()
+
+except KeyboardInterrupt:
+    print("\nServer shutting down...")
+
+finally:
+    for client in clients:
+        client.close()
+
+    server.close()
