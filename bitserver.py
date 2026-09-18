@@ -6,6 +6,7 @@ HOST = "0.0.0.0"
 PORT = 4806
 
 clients = []
+users = {}
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -42,6 +43,7 @@ def handle(client):
                 
                 if packet["type"] == "join":
                     username = packet["user"]
+                    users[username] = client
 
                     join_message = protocol.create_server(
                         f"{username} joined the chat."
@@ -55,6 +57,9 @@ def handle(client):
                     )
 
                     broadcast(protocol.encode(leave_message), client)
+
+                    if username in users:
+                        del users[username]
 
                     username = None
                     break
@@ -71,6 +76,9 @@ def handle(client):
         )
 
         broadcast(protocol.encode(leave_message), client)
+
+    if username in users:
+        del users[username]
 
     if client in clients:
         clients.remove(client)
