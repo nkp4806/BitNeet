@@ -3,11 +3,15 @@ import threading
 import select
 import sys
 import protocol
+import identity
 
 SERVER_IP = input("Server IP : ")
 PORT = 4806
 
 name = input("Your name : ")
+identity_data = identity.get_identity(name)
+
+user_id = identity_data["id"]
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((SERVER_IP, PORT))
@@ -40,7 +44,7 @@ threading.Thread(target=receive, daemon=True).start()
 
 print("\nConnected!\n")
 
-join_packet = protocol.create_join(name)
+join_packet = protocol.create_join(user_id, name)
 client.send(protocol.encode(join_packet))
 
 
@@ -60,7 +64,7 @@ try:
             continue
 
         if text == "/quit":
-            leave_packet = protocol.create_leave(name)
+            leave_packet = protocol.create_leave(user_id, name)
 
             try:
                 client.send(protocol.encode(leave_packet))

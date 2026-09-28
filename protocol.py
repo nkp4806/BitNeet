@@ -11,18 +11,20 @@ def create_message(user, message):
         "message": message
     }
 
-def create_join(user):
-    return{
+def create_join(user_id, user):
+    return {
         "version": PROTOCOL_VERSION,
         "type": "join",
+        "id": user_id,
         "user": user,
         "message": None
     }
 
-def create_leave(user):
-    return{
+def create_leave(user_id, user):
+    return {
         "version": PROTOCOL_VERSION,
         "type": "leave",
+        "id": user_id,
         "user": user,
         "message": None
     }
@@ -58,6 +60,10 @@ def validate(packet):
 
     if "message" not in packet:
         return False
+
+    if packet["type"] in {"join", "leave"}:
+        if "id" not in packet:
+            return False
 
     return True
 

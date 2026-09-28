@@ -27,6 +27,7 @@ def broadcast(message, sender):
 def handle(client):
     decoder = protocol.Decoder()
     username = None
+    user_id = None
 
     while True:
         try:
@@ -42,8 +43,13 @@ def handle(client):
                     continue
                 
                 if packet["type"] == "join":
+                    user_id = packet["id"]
                     username = packet["user"]
-                    users[username] = client
+
+                    users[user_id] = {
+                        "username": username,
+                        "client": client
+                    }
 
                     join_message = protocol.create_server(
                         f"{username} joined the chat."
@@ -58,10 +64,11 @@ def handle(client):
 
                     broadcast(protocol.encode(leave_message), client)
 
-                    if username in users:
-                        del users[username]
+                    if user_id in users:
+                        del users[user_id]
 
                     username = None
+                    user_id = None
                     break
 
                 else:
@@ -77,8 +84,8 @@ def handle(client):
 
         broadcast(protocol.encode(leave_message), client)
 
-    if username in users:
-        del users[username]
+    if user_id in users:
+        del users[user_id]
 
     if client in clients:
         clients.remove(client)
