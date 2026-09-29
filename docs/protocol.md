@@ -12,7 +12,7 @@ Each packet is sent as newline-delimited JSON (NDJSON).
 
 ## Packet Format
 
-Every packet must contain the following fields:
+Packets contain the following common fields:
 
 ```json
 {
@@ -25,6 +25,20 @@ Every packet must contain the following fields:
 
 ---
 
+## Identity
+
+Each BitNeet installation has a persistent BitNeet ID.
+
+The BitNeet ID identifies the user, while the IP address and TCP port identify where the user is currently connected.
+
+BitNeet IDs are currently generated locally and stored in:
+
+`~/.bitneet/identity.json`
+
+The current identity system does not provide authentication or cryptographic proof of identity.
+
+---
+
 ## Packet Types
 
 ### message
@@ -32,9 +46,9 @@ Every packet must contain the following fields:
 ```json
 {
     "version": 1,
-    "type": "message",
+    "type": "join",
     "user": "Neet",
-    "message": "Hello!"
+    "message": null
 }
 ```
 
@@ -44,6 +58,7 @@ Every packet must contain the following fields:
 {
     "version": 1,
     "type": "join",
+    "id": "BN-5945073B",
     "user": "Neet",
     "message": null
 }
@@ -55,6 +70,7 @@ Every packet must contain the following fields:
 {
     "version": 1,
     "type": "leave",
+    "id": "BN-5945073B",
     "user": "Neet",
     "message": null
 }
@@ -75,16 +91,31 @@ Every packet must contain the following fields:
 
 ## Transport
 
-Packets are newline-delimited JSON (NDJSON).
+Packets are transmitted over TCP using newline-delimited JSON (NDJSON).
 
 Each packet ends with a newline (`\n`).
 
-One line equals one complete packet.
+TCP is a stream protocol, so a single `recv()` call does not necessarily contain exactly one packet.
+
+BitNeet uses a decoder buffer to collect incoming data and split it into complete packets whenever a newline is received.
+
+This allows BitNeet to correctly handle packets that are:
+
+- Split across multiple TCP reads
+- Multiple packets received in a single TCP read
 
 ---
 
 ## Implementation Status
 
-BNP1 v1 is currently implemented for basic message communication.
+BNP1 v1 is currently implemented.
 
-The current implementation uses newline-delimited JSON, but robust TCP stream buffering and message framing are still under development.
+The current implementation supports:
+
+- JSON message packets
+- Join and leave packets with persistent BitNeet IDs
+- Server packets
+- Newline-delimited JSON (NDJSON)
+- TCP stream buffering and message framing
+- Packet validation
+- Persistent local identity storage

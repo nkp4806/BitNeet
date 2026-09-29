@@ -20,7 +20,8 @@
 - [x] Basic chat commands
 - [ ] Better error handling
 - [x] Robust TCP message framing
-- [ ] Persistent BitNeet user IDs
+- [x] Persistent BitNeet user IDs
+- [x] Server-side identity tracking
 - [ ] User-to-user addressing
 
 ## Phase 3 — Security

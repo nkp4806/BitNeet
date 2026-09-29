@@ -11,6 +11,10 @@ BitNeet is designed to provide simple, direct communication through the terminal
 - BNP1 (BitNeet Protocol v1)
 - JSON-based communication
 - Newline-delimited JSON (NDJSON)
+- Robust TCP message framing
+- Persistent BitNeet user identities
+- Identity-aware join and leave packets
+- Server-side identity tracking
 - Cross-device communication
 - Windows and Android/Termux support
 
@@ -26,6 +30,7 @@ BitNeet/
 ├── bitclient.py
 ├── bitserver.py
 ├── protocol.py
+├── identity.py
 │
 ├── docs/
 │   └── protocol.md
@@ -102,14 +107,19 @@ BitNeet uses **BNP1 (BitNeet Protocol v1)** for communication.
 
 BNP1 uses JSON packets transmitted as newline-delimited JSON (NDJSON).
 
-Example message packet:
+BitNeet also uses persistent user identities.
+
+A BitNeet ID identifies **who** a user is, while the current IP address and port identify **where** the user is connected.
+
+Example join packet:
 
 ```json
 {
     "version": 1,
-    "type": "message",
+    "type": "join",
+    "id": "BN-5945073B",
     "user": "Neet",
-    "message": "Hello!"
+    "message": null
 }
 ```
 
@@ -121,10 +131,17 @@ For the complete protocol specification, see:
 
 BitNeet is currently in early development.
 
-The current implementation supports basic LAN communication using the BNP1 protocol.
+The current implementation supports:
+
+- Basic LAN communication using BNP1
+- Robust TCP message framing
+- Persistent BitNeet user identities
+- Identity-aware join and leave packets
+- Server-side identity tracking
 
 ## Planned Features
 
+- User-to-user addressing
 - Internet communication
 - Commands
 - Encryption
