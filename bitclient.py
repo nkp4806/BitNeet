@@ -87,7 +87,7 @@ try:
         print("\nServer disconnected.")
 
 except KeyboardInterrupt:
-    leave_packet = protocol.create_leave(name)
+    leave_packet = protocol.create_leave(user_id, name)
 
     try:
         client.send(protocol.encode(leave_packet))
